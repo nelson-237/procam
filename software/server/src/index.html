@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>Procam</title>
+  </head>
+  <body>
+    <h1>Welcome to Procam's dashboard</h1>
+    <div>
+      <h2>Thermal camera:</h2>
+      <video id="thermal_video_player" width="320" height="240" controls muted="muted" autoplay> 
+        <source src="http://140.238.211.216:8080/thermal" type="video/mp4">
+      </video>
+    </div>
+    <div>
+      <h2>Regular camera:</h2>
+      <label>Key file:</label><input id="key_file_input" type="file">
+      <video id="regular_video_player" width="320" height="240" controls muted="muted" autoplay> 
+        <source src="http://140.238.211.216:8080/visible" type="video/mp4">
+      </video>
+    </div>
+  </body>
+</html>
