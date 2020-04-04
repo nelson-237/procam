@@ -3,9 +3,8 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const app = express();
+const config = require('config.json');
 
-const hostname = '0.0.0.0';
-const port = 8080;
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -59,6 +58,6 @@ app.get('/thermal', returnVideo(thermal_video_path));
 const visible_video_path = path.resolve(__dirname+'/../video/sample.mp4');
 app.get('/visible', returnVideo(visible_video_path));
 
-app.listen(port, function () {
-  console.log(`Listening on port ${port}!`);
+app.listen(config.network.port, function () {
+  console.log(`Listening on port ${config.network.port}!`);
 });
