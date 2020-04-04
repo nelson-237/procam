@@ -1,21 +1,24 @@
 <html>
   <head>
     <title>Procam</title>
+    <link rel="stylesheet" href="css/procam_styles.css">
   </head>
   <body>
     <h1>Welcome to Procam's dashboard</h1>
-    <div>
-      <h2>Thermal camera:</h2>
-      <video id="thermal_video_player" width="320" height="240" controls muted="muted" autoplay> 
-        <source src="http://140.238.211.216:8080/thermal" type="video/mp4">
-      </video>
-    </div>
-    <div>
-      <h2>Regular camera:</h2>
-      <label>Key file:</label><input id="key_file_input" type="file">
-      <video id="regular_video_player" width="320" height="240" controls muted="muted" autoplay> 
-        <source src="http://140.238.211.216:8080/visible" type="video/mp4">
-      </video>
+
+    <p>This project aims to build a system that captures both IR and visible lights to tell the temperature of each person passing by with a good precision. Below is not a complete project and just an initial prototype.</p>
+
+    <p>Below you see the frames from thermal and visible cameras respectively.</p>
+    
+    <div class="row">
+      <div class="column">
+        <h2>Thermal camera:</h2>
+        <img src="http://140.238.211.216:8080/thermal.jpeg" alt="Thermal camera" style="width:100%">
+      </div>
+      <div class="column">
+        <h2>Regular camera:</h2>
+        <img src="http://140.238.211.216:8080/visible.jpeg" alt="Regular camera" style="width:100%">
+      </div>
     </div>
   </body>
 </html>
