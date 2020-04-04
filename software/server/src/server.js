@@ -1,4 +1,3 @@
-
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -12,7 +11,8 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
   console.log('page');
 })
-function returnVideo(video_path){
+
+function returnImage(image_path){
   return (req, res) => {
     const stat = fs.statSync(video_path);
     const fileSize = stat.size;
@@ -52,11 +52,11 @@ function returnVideo(video_path){
   }
 };
 
-const thermal_video_path = path.resolve(__dirname+'/../video/sample.mp4');
-app.get('/thermal', returnVideo(thermal_video_path));
+const thermal_image_path = path.resolve(__dirname+'/../images/thermal_sample.jpeg');
+app.get('/thermal', returnImage(thermal_image_path));
 
-const visible_video_path = path.resolve(__dirname+'/../video/sample.mp4');
-app.get('/visible', returnVideo(visible_video_path));
+const visible_image_path = path.resolve(__dirname+'/../images/visible_sample.jpeg');
+app.get('/visible', returnImage(visible_image_path));
 
 app.listen(config.network.port, function () {
   console.log(`Listening on port ${config.network.port}!`);
