@@ -28,7 +28,7 @@ module.exports = function(){
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.static(path.resolve(__dirname+'/../images')));
 
-  const image_dir = path.resolve(__dirname+'/../images/');
+  const image_dir = path.resolve(path.join(__dirname, config.image_dir));
   app.get('/image/stream', returnImage(image_dir, 'stream.jpeg'));
   app.get('/image/thermal', returnImage(image_dir, 'thermal.jpeg'));
   app.get('/image/visible', returnImage(image_dir, 'visible.jpeg'));
@@ -38,7 +38,7 @@ module.exports = function(){
     console.log('index');
   })
 
-  app.listen(config.network.port, function () {
-    console.log(`Listening on port ${config.network.port}!`);
+  app.listen(config.web_server.network.port, function () {
+    console.log(`Listening on port ${config.web_server.network.port}!`);
   });
 }
