@@ -4,12 +4,6 @@
             "port": 8080
         }
     },
-    "image_receiver":{
-        "network":{
-            "host":"",
-            "port": 9090
-        }
-    },
-    "image_dir":"../images",
-    "upload_dir":"../uploads"
+    "upload_dir":"../uploads",
+    "queue_capacity":5
 }

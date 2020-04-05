@@ -19,5 +19,5 @@ function refreshIt(element) {
       element.src = element.src.split('?')[0] + '?' + new Date().getTime();
       refreshIt(element);;
       refreshIt(element);
-  }, 500); // refresh every 0.5s
+  }, 100); // refresh every 0.1s
 }

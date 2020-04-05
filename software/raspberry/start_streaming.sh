@@ -1,5 +1,5 @@
 CAMERA_ID=1 #modify to camera id
-WAIT_TIME=60s
+WAIT_TIME=0.1s
 SERVER_HOST=192.168.0.33 #modify to server ip
 SERVER_PORT=8080
 mkdir -p build
