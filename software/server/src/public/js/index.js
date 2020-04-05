@@ -16,7 +16,8 @@ function init() {
 
 function refreshIt(element) {
   setTimeout(function() {
-      element.src = element.src;
+      element.src = element.src.split('?')[0] + '?' + new Date().getTime();
+      refreshIt(element);;
       refreshIt(element);
   }, 500); // refresh every 0.5s
 }

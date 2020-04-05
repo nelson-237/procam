@@ -12,6 +12,7 @@ function returnImage(image_dir, image_name){
       res.status(403).end('Forbidden');
     }
     var type = 'image/jpeg'
+    console.log(image_path);
     var s = fs.createReadStream(image_path);
     s.on('open', function () {
         res.set('Content-Type', type);
