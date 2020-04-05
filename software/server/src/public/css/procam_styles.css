@@ -1,38 +1,6 @@
-body {
-    background-color: powderblue;
-  }
-
-  h1 {
-    color: blue;
-  }
-
-  p {
-    color: black;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-  
-
-
-/* For below, source: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_images_side_by_side_resp*/
-  .column {
-    float: left;
-    width: 33.33%;
-    padding: 5px;
-  }
-  
-  /* Clearfix (clear floats) */
-  .row::after {
-    content: "";
-    clear: both;
-    display: table;
-  }
-  
-  /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
-  @media screen and (max-width: 500px) {
-    .column {
-      width: 100%;
-    }
-  }
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
