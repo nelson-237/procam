@@ -2,6 +2,8 @@ from picamera import PiCamera
 import sys
 from argparse import Action, ArgumentParser
 from os import path
+import numpy as np
+from PIL import Image
 
 # From https://pymotw.com/2/argparse/ or
 # https://stackoverflow.com/questions/8632354/python-argparse-custom-actions-with-additional-arguments-passed
@@ -17,6 +19,12 @@ class AbsPathAction(Action):
         setattr(namespace, self.dest,
                 path.abspath(path.expanduser(values)))
 
+def capture(output_file, resolution):
+    camera = PiCamera()
+    camera.resolution = resolution
+    camera.start_preview()
+    camera.capture()
+
 
 def main():
     """Main function.
@@ -31,13 +39,19 @@ def main():
     parser.add_argument('file_path',
                         help="file name of captured image from visible camera",
                         action=AbsPathAction)
+    parser.add_argument("--simulation", help="simulate the camera feed with random values",
+                        action="store_true")
 
     args = parser.parse_args()
-
-    camera = PiCamera()
-    camera.resolution = (1024, 768)
-    camera.start_preview()
-    camera.capture(args.file_path)
+    resolution=(1024, 768)
+    if args.simulation:
+        rgb_frame = np.uint8(np.random.rand(resolution[0], resolution[1], 3)*255)
+        img = Image.fromarray(rgb_frame, 'RGB')
+        img.save(args.file_path)
+    else:
+        capture(args.file_path, resolution)
+    
+    
 
 
 if __name__ == '__main__':
