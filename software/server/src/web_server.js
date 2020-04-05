@@ -25,10 +25,6 @@ function returnImage(image_dir, image_name){
   };
 }
 
-function replace_image(file_path){
-  fs.symlinkSync(file_path, path.join(image_dir,'stream.jpeg'));
-  // TODO: split back the image
-} 
 
 function main(){
   const app = express();
@@ -57,7 +53,11 @@ function main(){
           file.pipe(fstream);
           fstream.on('close', function () {
               res.end();
-              replace_image(file_path);
+              var dest_path = path.join(image_dir,'stream.jpeg');
+              if(fs.existsSync(dest_path)){
+                fs.unlinkSync(dest_path, console.log);
+              }
+              fs.symlinkSync(file_path, dest_path);
           });
       });
   });
