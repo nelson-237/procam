@@ -77,3 +77,9 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+software/JPEG_transmorph_code/jptrsmorph
+software/JPEG_transmorph_code/src/cjpeg
+software/JPEG_transmorph_code/src/djpeg
+software/JPEG_transmorph_code/src/jpegtran
+software/JPEG_transmorph_code/src/rdjpgcom
+software/JPEG_transmorph_code/src/wrjpgcom
