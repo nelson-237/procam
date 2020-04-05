@@ -20,4 +20,7 @@ if __name__ == "__main__":
     dest_ip = sys.argv[2]
     dest_port = int(sys.argv[3])
     file_path = sys.argv[4]
-    send_file(source_ip, source_port, dest_ip, dest_port, file_path)
+    try:
+        send_file(source_ip, source_port, dest_ip, dest_port, file_path)
+    except Exception as e:
+        print("Error while sending the file": e)
