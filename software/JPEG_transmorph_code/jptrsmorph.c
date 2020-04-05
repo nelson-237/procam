@@ -1226,8 +1226,8 @@ main (int argc, char **argv)
 	
 	// procam update
 	// delete the intermediate file
-	if( remove( static_output_filename ) != 0 )
-    		perror( "DEBUG: Error deleting the intermediate file" );
+	// if( remove( static_output_filename ) != 0 )
+    // 		perror( "DEBUG: Error deleting the intermediate file" );
   	//else
   	//	puts( "DEBUG: Intermedaite file successfully deleted" );
 	/* All done. */
