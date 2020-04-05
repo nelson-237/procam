@@ -23,7 +23,7 @@ def main():
     """
     # Parse the arguments.
     # All paths are converted to *absolute* with respect to the working
-    # directory from which `runtestbed.py` was invoked.
+    # directory from which the script is invoked.
     parser = ArgumentParser(
         description="Run Module 1 (captures visible.jpeg) from a visible light camera."
     )
