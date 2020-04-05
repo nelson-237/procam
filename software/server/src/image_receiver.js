@@ -1,6 +1,7 @@
 var net = require('net');
 var fs = require('fs');
 var buffer = require('buffer');
+const path = require('path');
 const config = require(path.join(__dirname,'config.json'));
 
 module.exports = function(){
@@ -18,7 +19,7 @@ module.exports = function(){
         port, 
         host,
         () => {
-            console.log('server bound to ' + port + '\n');
+            console.log('image receiver bound to ' + port + '\n');
             server.on('connection', () => {
                 console.log('connection made...\n')
             });

@@ -1,3 +1,5 @@
-const webserver = require('./webserver');
+const web_server = require('./web_server');
+const image_receiver = require('./image_receiver');
 
-webserver()
+web_server(); 
+image_receiver();
