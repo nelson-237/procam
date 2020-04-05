@@ -1,7 +1,7 @@
 from picamera import PiCamera
 import sys
 from argparse import Action, ArgumentParser
-
+from os import path
 
 # From https://pymotw.com/2/argparse/ or
 # https://stackoverflow.com/questions/8632354/python-argparse-custom-actions-with-additional-arguments-passed
