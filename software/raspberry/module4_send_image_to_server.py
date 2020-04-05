@@ -13,7 +13,7 @@ def send_file(source_ip, source_port, dest_ip, dest_port, file_path):
 
 if __name__ == "__main__":
     source_ip = "0.0.0.0"
-    if len(sys.argv < 5):
+    if len(sys.argv)< 5:
         print("not enough args")
         exit(1)
     source_port = int(sys.argv[1])
@@ -23,4 +23,4 @@ if __name__ == "__main__":
     try:
         send_file(source_ip, source_port, dest_ip, dest_port, file_path)
     except Exception as e:
-        print("Error while sending the file": e)
+        print("Error while sending the file:", e)
