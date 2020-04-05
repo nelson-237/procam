@@ -41,7 +41,7 @@ function main(){
     console.log('index');
   });
   function replace_image(file_path){
-    fs.copyFile(file_path, path.join(image_dir,'stream.jpeg'));
+    fs.symlinkSync(file_path, path.join(image_dir,'stream.jpeg'));
     // TODO: split back the image
   } 
   const upload_dir = path.resolve(path.join(__dirname, config.upload_dir));

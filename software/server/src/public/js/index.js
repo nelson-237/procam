@@ -13,3 +13,10 @@ function init() {
     else VP.pause()
   })
 }
+
+function refreshIt(element) {
+  setTimeout(function() {
+      element.src = element.src;
+      refreshIt(element);
+  }, 500); // refresh every 0.5s
+}
