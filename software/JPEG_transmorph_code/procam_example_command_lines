@@ -1,0 +1,10 @@
+# use this for morphing
+# big_o.jpg: original visible image
+# small_o.jpg: original thermal image
+# small_emb.jpg: thermal image having original visible image embedded in it
+./jptrsmorph -morph procam_example/big_o.jpg procam_example/small_o.jpg procam_example/small_emb.jpg
+
+# use this for inverse morphing
+# small_emb.jpg: thermal image having original visible image embedded in it
+# big_rec.jpg: reconstructed visible image
+./jptrsmorph -remorph procam_example/small_emb.jpg procam_example/big_rec.jpg
