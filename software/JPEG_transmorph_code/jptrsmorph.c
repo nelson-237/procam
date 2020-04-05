@@ -53,12 +53,16 @@ static char * maskfilename;	    /* mask filename */
 static int transMode = 0;       /* mode of transcoding: 0-normal JPEG transcoding; 3-JPEG Transmorphing; 4-JPEG Re-Transmorphing. */
 static boolean scrambleOption = 0;     /* Scramble the image or not. Default 0*/
 static long long int key;       /* Scrambling key. */
-
+static char * static_output_filename = "/Users/sirin/Dropbox/lauzhack2020/procam/JPEG_transmorph_code/temp.jpg";
 
 /* Number of MCUs */
 static int mcu_counter = 0;
 
-static int maskMat[5000][5000]; /* Mask matrix */
+#define MASKMATX 3500
+#define MASKMATY 2500
+
+//static int maskMat[5000][5000]; /* Mask matrix */
+static int maskMat[MASKMATX][MASKMATY]; /* Mask matrix -- procam update */
 static int maskArray[25000000];
 
 #define TRANSMORPH 3
@@ -229,7 +233,9 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 	/* Set up default JPEG parameters. */
 	simple_progressive = FALSE;
 	outfilename = NULL;
-	copyoption = JCOPYOPT_DEFAULT;
+	// procam update
+	//copyoption = JCOPYOPT_DEFAULT;
+	copyoption = JCOPYOPT_ALL;
 	transformoption.transform = JXFORM_NONE;
 	transformoption.trim = FALSE;
 	transformoption.force_grayscale = FALSE;
@@ -251,13 +257,16 @@ parse_switches (j_compress_ptr cinfo, int argc, char **argv,
 		
 		if (keymatch(arg, "morph", 1)) {
 			
-			if (++argn >= argc)	/* advance to next argument */
+			// procam update -- no need a maskfile. it is generated in-memory, on the fly. see procam updates in this file.
+			//if (++argn >= argc)	/* advance to next argument */
+			if (argn >= argc)	/* advance to next argument */
 				usage();
 			
 			/* JPEG Transmorphing mode. transMode = 1 */
 			transMode = TRANSMORPH;
 			
-			maskfilename = argv[argn];
+			// procam update -- no need a maskfile. it is generated in-memory, on the fly. see procam updates in this file.
+			//maskfilename = argv[argn];
 			
 		} else if (keymatch(arg, "remorph", 1)) {
 			
@@ -647,8 +656,11 @@ main (int argc, char **argv)
 			fprintf(stderr, "%s: can't open %s\n", progname, argv[file_index]);
 			exit(EXIT_FAILURE);
 		}
-		if ((output_file = fopen(argv[file_index+1], WRITE_BINARY)) == NULL) {
-			fprintf(stderr, "%s: can't open %s\n", progname, argv[file_index+1]);
+		// procam update -- static outfile is assigned as it does not produce what we need
+		//if ((output_file = fopen(argv[file_index+1], WRITE_BINARY)) == NULL) {
+		if ((output_file = fopen(static_output_filename, WRITE_BINARY)) == NULL) {
+			//fprintf(stderr, "%s: can't open %s\n", progname, argv[file_index+1]);
+			fprintf(stderr, "%s: can't open %s\n", progname, static_output_filename);
 			exit(EXIT_FAILURE);
 		}
 	} else {
@@ -657,7 +669,7 @@ main (int argc, char **argv)
 		/* default output file is stdout */
 		output_file = write_stdout();
 	}
-	
+
 #ifdef PROGRESS_REPORT
 	start_progress_monitor((j_common_ptr) &dstinfo, &progress);
 #endif
@@ -691,13 +703,23 @@ main (int argc, char **argv)
 	if (transMode == TRANSMORPH) {
 		fprintf(stderr, "---------- Morphing ----------\n");
 		
+		// procam update 
+		//fprintf(stderr, "  Input file is %s\n", argv[file_index+2]);
+		//fprintf(stderr, "  Output file is %s\n", argv[file_index+3]);
+		fprintf(stderr, "  Input file is %s\n", argv[file_index+1]);
+		fprintf(stderr, "  Output file is %s\n", argv[file_index+2]);
 		
-		fprintf(stderr, "  Input file is %s\n", argv[file_index+2]);
-		fprintf(stderr, "  Output file is %s\n", argv[file_index+3]);
-		
+		// procam update
 		/* Read mask matrix from maskfile */
-		readMaskFromText(maskfilename);
-		
+		//readMaskFromText(maskfilename);
+		// statically assingn the mask to all 1s for the defined sizes (see MASKMATX and MASKMATY constants above)
+		// Initilize the scrambling mask matrix to 0
+		int i,j;
+         	for (i = 0; i < MASKMATX; i++) {
+                	for (j = 0; j < MASKMATY; j++)
+                        	maskMat[i][j] = 1;
+          	}	
+	
 		/* Process DCT in the following code */
 		JBLOCKARRAY buffer[MAX_COMPS_IN_SCAN];
 		//	JBLOCKROW MCU_buffer[C_MAX_BLOCKS_IN_MCU];
@@ -788,7 +810,9 @@ main (int argc, char **argv)
 		fprintf(stderr, "---------- Re-Morphing ----------\n");
 		/* Added by Lin YUAN (lin.yuan@epfl.ch)*/
 		/* Read embedded sub-image from JPEG APP9 marker, save it to a JPEG file. */
-		char *subimageName = argv[file_index+2];
+		// procam update
+		//char *subimageName = argv[file_index+2];
+		char *subimageName = argv[file_index+1];
 		FILE *subimgFile = fopen(subimageName, "w");
 		char *bufArray = NULL;
 		int row, col, bytes_filesize, x, y, mCounter = 0;
@@ -1000,7 +1024,7 @@ main (int argc, char **argv)
 	
 	/* Adjust default compression parameters by re-parsing the options */
 	file_index = parse_switches(&dstinfo, argc, argv, 0, TRUE);
-	
+
 	/* Specify data destination for compression */
 	jpeg_stdio_dest(&dstinfo, output_file);
 	
@@ -1061,12 +1085,18 @@ main (int argc, char **argv)
 		
 		/* Open the input file. */
 		if (file_index < argc) {
-			if ((input_file2 = fopen(argv[file_index+2], READ_BINARY)) == NULL) {
-				fprintf(stderr, "%s: can't open %s\n", progname, argv[file_index+2]);
+			// procam update -- visible_sub is removed from argument list, so arguments shifted by 1
+			//if ((input_file2 = fopen(argv[file_index+2], READ_BINARY)) == NULL) {
+			if ((input_file2 = fopen(argv[file_index+1], READ_BINARY)) == NULL) {
+				//fprintf(stderr, "%s: can't open %s\n", progname, argv[file_index+2]);
+				fprintf(stderr, "%s: can't open %s\n", progname, argv[file_index+1]);
 				exit(EXIT_FAILURE);
 			}
-			if ((output_file2 = fopen(argv[file_index+3], WRITE_BINARY)) == NULL) {
-				fprintf(stderr, "%s: can't open %s\n", progname, argv[file_index+3]);
+			// procam update -- visible_sub is removed from argument list, so arguments shifted by 1
+			//if ((output_file2 = fopen(argv[file_index+3], WRITE_BINARY)) == NULL) {
+			if ((output_file2 = fopen(argv[file_index+2], WRITE_BINARY)) == NULL) {
+				//fprintf(stderr, "%s: can't open %s\n", progname, argv[file_index+3]);
+				fprintf(stderr, "%s: can't open %s\n", progname, argv[file_index+2]);
 				exit(EXIT_FAILURE);
 			}
 		} else {
@@ -1132,7 +1162,9 @@ main (int argc, char **argv)
 		int bytes_mask_array = ceil(mcu_counter/8.0);
 		
 		/* The subimage to be writted in markers */
-		FILE *fileToWrite = fopen(argv[file_index + 1], "r");
+		// procam update
+		//FILE *fileToWrite = fopen(argv[file_index + 1], "r");
+		FILE *fileToWrite = fopen(static_output_filename, "r");
 		/* File size of the subimage (in bytes) */
 		long filesize;
 		if (fileToWrite != NULL) {
@@ -1164,7 +1196,9 @@ main (int argc, char **argv)
 		}
 		
 		/* Write the subimage (by byte) into the next JPEG APP11 marker(s). Added by Lin YUAN (lin.yuan@epfl.ch). */
-		writeFileToMarker( &dstinfo2, argv[file_index + 1], 11, filesize );
+		// procam update
+		//writeFileToMarker( &dstinfo2, argv[file_index + 1], 11, filesize );
+		writeFileToMarker( &dstinfo2, static_output_filename, 11, filesize );
 		
 		/* Execute image transformation, if any */
 #if TRANSFORMS_SUPPORTED
@@ -1190,7 +1224,12 @@ main (int argc, char **argv)
 #endif
 	}
 	
-	
+	// procam update
+	// delete the intermediate file
+	if( remove( static_output_filename ) != 0 )
+    		perror( "DEBUG: Error deleting the intermediate file" );
+  	//else
+  	//	puts( "DEBUG: Intermedaite file successfully deleted" );
 	/* All done. */
 	exit(jsrcerr.num_warnings + jdsterr.num_warnings ?EXIT_WARNING:EXIT_SUCCESS);
 	return 0;			/* suppress no-return-value warnings */
