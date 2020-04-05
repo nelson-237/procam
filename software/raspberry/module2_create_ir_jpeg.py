@@ -4,22 +4,17 @@ import time
 import board
 import busio
 import adafruit_mlx90640
+import numpy as np 
+import cv2
 
-i2c = busio.I2C(board.SCL, board.SDA, frequency=800000)
+# function to convert temperatures to pixels on image
+def td_to_image(f, Tmin, Tmax):
+	norm = np.uint8((f/100 - Tmin)*255/(Tmax-Tmin))
+	norm.shape = (24,32)
+	return norm
 
-mlx = adafruit_mlx90640.MLX90640(i2c)
-print("MLX addr detected on I2C", [hex(i) for i in mlx.serial_number])
 
-#mlx.refresh_rate = adafruit_mlx90640.RefreshRate.REFRESH_2_HZ
-
-frame = [0] * 768
-while True:
-    try:
-        mlx.getFrame(frame)
-    except ValueError:
-        # these happen, no biggie - retry
-        continue
-
+def print_frame(frame):
     for h in range(24):
         for w in range(32):
             t = frame[h*32 + w]
@@ -27,9 +22,24 @@ while True:
         print()
     print()
 
-    break
+def main(output_file, Tmin = 20, Tmax = 40):
+    i2c = busio.I2C(board.SCL, board.SDA, frequency=800000)
+    mlx = adafruit_mlx90640.MLX90640(i2c)
+    print("MLX addr detected on I2C", [hex(i) for i in mlx.serial_number])
+    try:
+        frame = [0] * 768
+        mlx.getFrame(frame)
+        print_frame(frame)
+        ta_img = td_to_image(frame, Tmin, Tmax)
+        img = cv2.applyColorMap(ta_img, cv2.COLORMAP_JET)
+        cv2.imwrite(img, output_file)
+    except Exception as e:
+        print("Error while capturing IR Image:", e)
+        exit(1)
 
-#TODO Convert frame to jpeg image
+
+if __name__ == "__main__":
+    main('test.jpeg')
 
 
 

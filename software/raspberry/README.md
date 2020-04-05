@@ -8,10 +8,10 @@
 
 ## Usage:
 ### Module 1:
-`python module1_create_visible_jpeg.py <output_image_path>`
-### Module 4:
-`python module2_create_ir_jpeg.py <output_image_path>`
+`python3 module1_create_visible_jpeg.py <output_image_path>`
+### Module 2:
+`python3 module2_create_ir_jpeg.py <output_image_path>`
 ### Module 3:
 `./jptrsmorph -morph <mask_file> -key 8966 rgb_o.jpg rgb_sub.jpg thermal_o.jpg thermal_emb.jpg`
 ### Module 4:
-`python module4_send_image_to_server.py <server_hostname> <server_port> <image_path>`
+`python3 module4_send_image_to_server.py <server_hostname> <server_port> <image_path>`
