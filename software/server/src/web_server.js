@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const config = require(path.join(__dirname,'config.json'));
+const busboy = require('connect-busboy');
 
 function returnImage(image_dir, image_name){
   const image_path = path.join(image_dir, image_name);
@@ -23,7 +24,7 @@ function returnImage(image_dir, image_name){
   };
 }
 
-module.exports = function(){
+function main(){
   const app = express();
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.static(path.resolve(__dirname+'/../images')));
@@ -36,9 +37,25 @@ module.exports = function(){
   app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
     console.log('index');
-  })
+  });
+
+  app.use(busboy()); 
+  app.post('/upload', function(req, res) {
+      var fstream;
+      req.pipe(req.busboy);
+      req.busboy.on('file', function (fieldname, file, filename) {
+          console.log("Uploading: " + filename); 
+          fstream = fs.createWriteStream(path.join(__dirname, config.upload_dir, filename));
+          file.pipe(fstream);
+          fstream.on('close', function () {
+              res.redirect('back');
+          });
+      });
+  });
 
   app.listen(config.web_server.network.port, function () {
     console.log(`Listening on port ${config.web_server.network.port}!`);
   });
 }
+
+main();

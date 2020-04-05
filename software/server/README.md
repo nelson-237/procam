@@ -6,7 +6,7 @@
 - run `npm install`
 
 ## Launch the web server:
-- run `nodejs src/main.js`
+- run `nodejs src/web_server.js`
 
 ## Configuration:
 - change the configuration in `src/config.json`
