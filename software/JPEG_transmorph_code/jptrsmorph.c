@@ -53,7 +53,7 @@ static char * maskfilename;	    /* mask filename */
 static int transMode = 0;       /* mode of transcoding: 0-normal JPEG transcoding; 3-JPEG Transmorphing; 4-JPEG Re-Transmorphing. */
 static boolean scrambleOption = 0;     /* Scramble the image or not. Default 0*/
 static long long int key;       /* Scrambling key. */
-static char * static_output_filename = "/Users/sirin/Dropbox/lauzhack2020/procam/JPEG_transmorph_code/temp.jpg";
+static char * static_output_filename = "temp.jpg";
 
 /* Number of MCUs */
 static int mcu_counter = 0;
