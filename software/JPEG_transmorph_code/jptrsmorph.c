@@ -1182,7 +1182,7 @@ main (int argc, char **argv)
 		fprintf(stderr, "  Number of bytes to write in APP11: 1 + 1 + %d + %d\n", bytes_filesize, bytes_mask_array);
 		jpeg_write_m_byte(&dstinfo2, TRANSMORPH);       /* 1st byte - protection method: 3 - TRANSMORPH */
 		jpeg_write_m_byte(&dstinfo2, bytes_filesize);   /* 2nd byte - bytes_filesize */
-		
+		fprintf(stderr, 'HELLO %d\n', 1);
 		/* Record the filesize in the following <bytes_filesize> bytes */
 		int x;
 		for (x = 0; x < bytes_filesize; x++) {
@@ -1205,6 +1205,7 @@ main (int argc, char **argv)
 		jtransform_execute_transformation(&srcinfo2, &dstinfo2,
 										  src_coef_arrays2,
 										  &transformoption);
+		fprintf(stderr, 'HELLO %d\n', 2);
 #endif
 		
 		/* Finish compression and release memory */
@@ -1218,6 +1219,7 @@ main (int argc, char **argv)
 			fclose(input_file2);
 		if (output_file2 != stdout)
 			fclose(output_file2);
+		fprintf(stderr, 'HELLO %d\n', 3);
 		
 #ifdef PROGRESS_REPORT
 		end_progress_monitor((j_common_ptr) &dstinfo2);
@@ -1226,11 +1228,12 @@ main (int argc, char **argv)
 	
 	// procam update
 	// delete the intermediate file
-	// if( remove( static_output_filename ) != 0 )
-    // 		perror( "DEBUG: Error deleting the intermediate file" );
+	if( remove( static_output_filename ) != 0 )
+    		perror( "DEBUG: Error deleting the intermediate file" );
   	//else
   	//	puts( "DEBUG: Intermedaite file successfully deleted" );
 	/* All done. */
+	fprintf(stderr, 'HELLO %d\n', 4);
 	exit(jsrcerr.num_warnings + jdsterr.num_warnings ?EXIT_WARNING:EXIT_SUCCESS);
 	return 0;			/* suppress no-return-value warnings */
 }
