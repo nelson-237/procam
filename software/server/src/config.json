@@ -1,5 +1,15 @@
 {
-    "network":{
-        "port": 8080
-    }
+    "web_server":{
+        "network":{
+            "port": 8080
+        }
+    },
+    "image_receiver":{
+        "network":{
+            "host":"",
+            "port": 9090
+        }
+    },
+    "image_dir":"../images",
+    "upload_dir":"../uploads"
 }
