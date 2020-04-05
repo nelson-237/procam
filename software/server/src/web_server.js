@@ -24,6 +24,8 @@ function returnImage(image_dir, image_name){
   };
 }
 
+
+
 function main(){
   const app = express();
   app.use(express.static(path.join(__dirname, 'public')));
@@ -31,24 +33,30 @@ function main(){
 
   const image_dir = path.resolve(path.join(__dirname, config.image_dir));
   app.get('/image/stream', returnImage(image_dir, 'stream.jpeg'));
-  app.get('/image/thermal', returnImage(image_dir, 'thermal.jpeg'));
+  app.get('/image/thermal', returnImage(image_dir, 'thermal.jpelg'));
   app.get('/image/visible', returnImage(image_dir, 'visible.jpeg'));
 
   app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
     console.log('index');
   });
-
+  function replace_image(file_path){
+    fs.copyFile(file_path, path.join(image_dir,'stream.jpeg'));
+    // TODO: split back the image
+  } 
+  const upload_dir = path.resolve(path.join(__dirname, config.upload_dir));
   app.use(busboy()); 
   app.post('/upload', function(req, res) {
       var fstream;
       req.pipe(req.busboy);
       req.busboy.on('file', function (fieldname, file, filename) {
           console.log("Uploading: " + filename); 
-          fstream = fs.createWriteStream(path.join(__dirname, config.upload_dir, filename));
+          file_path = path.join(upload_dir, filename);
+          fstream = fs.createWriteStream(file_path);
           file.pipe(fstream);
           fstream.on('close', function () {
-              res.redirect('back');
+              res.end();
+              replace_image(file_path);
           });
       });
   });
