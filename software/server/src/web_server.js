@@ -83,7 +83,7 @@ function main(){
   // returns the main webpage index.html
   app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
-    console.log('index');
+    // console.log('index');
   });
   
   // This handles the camera uploads and updates the queues
