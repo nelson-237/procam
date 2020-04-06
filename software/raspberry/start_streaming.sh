@@ -1,3 +1,4 @@
+##CONFIGURATION:
 CAMERA_ID=1 #camera id
 WAIT_TIME=0.1s #sampling period
 SERVER_HOST=192.168.0.33 #server ip
