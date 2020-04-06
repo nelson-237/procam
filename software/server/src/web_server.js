@@ -107,6 +107,7 @@ function main(){
                 var to_delete = stream_queue.shift();
                 fs.unlink(to_delete, ()=>{});
               }
+              // TODO: extract the visible image and put it in the visible queue
           });
       });
   });
